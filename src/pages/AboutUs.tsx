@@ -24,7 +24,7 @@ export default function AboutUs() {
     },
     {
       name: 'Fardeen Quadri',
-      avatar: '/placeholder.svg?height=120&width=120',
+      avatar: './avatars/fardeen.jpg?height=120&width=120',
       passion: 'Impact',
       icon: Target,
       color: 'bg-teal-100 text-teal-700',
