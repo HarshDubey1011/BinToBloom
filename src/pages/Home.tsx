@@ -66,7 +66,7 @@ const Home: React.FC = () => {
 
             <div className="relative">
               <img
-                src="/placeholder.svg?height=500&width=600"
+                src="/tree5.png?height=500&width=600"
                 alt="Waste Management Process"
                 className="rounded-lg shadow-lg"
               />
