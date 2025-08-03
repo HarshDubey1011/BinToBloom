@@ -2,23 +2,31 @@
 
 import type React from 'react'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../store/hooks'
-import { logout } from '../store/slices/authSlice'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useAppSelector, useAppDispatch } from '@/lib/store/hooks'
+import { logout } from '@/lib/store/slices/authSlice'
 import { Bell, Menu, X } from 'lucide-react'
 import NotificationDropdown from './NotificationDropdown'
+import { useMounted } from '@/hooks/use-mounted'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user } = useAppSelector((state) => state.auth)
   const { unreadCount } = useAppSelector((state) => state.notifications)
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const router = useRouter()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showNotifications, setShowNotifications] = useState(false)
+  const mounted = useMounted()
 
   const handleLogout = () => {
     dispatch(logout())
-    navigate('/')
+    router.push('/')
+  }
+
+  if (!mounted) {
+    return <LoadingSpinner />
   }
 
   return (
@@ -26,7 +34,7 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-sm">B</span>
               </div>
@@ -39,33 +47,33 @@ const Navbar: React.FC = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link
-              to="/"
+              href="/"
               className="text-gray-600 hover:text-green-600 transition-colors"
             >
               Home
             </Link>
             <Link
-              to="/#how-it-works"
+              href="/#how-it-works"
               className="text-gray-600 hover:text-green-600 transition-colors"
             >
               How It Works
             </Link>
             {!isAuthenticated && (
               <Link
-                to="/register?role=collector"
+                href="/register?role=collector"
                 className="text-gray-600 hover:text-green-600 transition-colors"
               >
                 Join as Collector
               </Link>
             )}
             <Link
-              to="/about-us"
+              href="/about-us"
               className="text-gray-600 hover:text-green-600 transition-colors"
             >
               About
             </Link>
             <Link
-              to="/#impact"
+              href="/#impact"
               className="text-gray-600 hover:text-green-600 transition-colors"
             >
               Impact
@@ -97,7 +105,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <span className="text-gray-700">Hi, {user?.name}</span>
                   <Link
-                    to={
+                    href={
                       user?.role === 'COLLECTOR'
                         ? '/collector-dashboard'
                         : '/dashboard'
@@ -117,13 +125,13 @@ const Navbar: React.FC = () => {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link
-                  to="/login"
+                  href="/login"
                   className="text-gray-600 hover:text-green-600 transition-colors"
                 >
                   Login
                 </Link>
                 <Link
-                  to="/schedule-pickup"
+                  href={isAuthenticated ? '/schedule-pickup' : '/register'}
                   className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
                 >
                   Schedule Pickup
@@ -151,25 +159,25 @@ const Navbar: React.FC = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="flex flex-col space-y-4">
-              <Link to="/" className="text-gray-600 hover:text-green-600">
+              <Link href="/" className="text-gray-600 hover:text-green-600">
                 Home
               </Link>
               <Link
-                to="/#how-it-works"
+                href="/#how-it-works"
                 className="text-gray-600 hover:text-green-600"
               >
                 How It Works
               </Link>
               {!isAuthenticated && (
                 <Link
-                  to="/register?role=collector"
+                  href="/register?role=collector"
                   className="text-gray-600 hover:text-green-600"
                 >
                   Join as Collector
                 </Link>
               )}
               <Link
-                to="/#impact"
+                href="/#impact"
                 className="text-gray-600 hover:text-green-600"
               >
                 Impact
@@ -179,7 +187,7 @@ const Navbar: React.FC = () => {
                 <div className="flex flex-col space-y-2 pt-4 border-t">
                   <span className="text-gray-700">Hi, {user?.name}</span>
                   <Link
-                    to={
+                    href={
                       user?.role === 'COLLECTOR'
                         ? '/collector-dashboard'
                         : '/dashboard'
@@ -197,11 +205,11 @@ const Navbar: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex flex-col space-y-2 pt-4 border-t">
-                  <Link to="/login" className="text-gray-600">
+                  <Link href="/login" className="text-gray-600">
                     Login
                   </Link>
                   <Link
-                    to="/schedule-pickup"
+                    href="/schedule-pickup"
                     className="bg-green-500 text-white px-4 py-2 rounded-lg text-center"
                   >
                     Schedule Pickup

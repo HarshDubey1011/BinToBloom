@@ -1,10 +1,18 @@
 'use client'
-
+import { useEffect, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Leaf, Heart, Lightbulb, Target, Users } from 'lucide-react'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
+import { useMounted } from '@/hooks/use-mounted'
 
 export default function AboutUs() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const teamMembers = [
     {
       name: 'Harsh Dubey',
@@ -47,6 +55,11 @@ export default function AboutUs() {
       quote: 'Driven by purpose, powered by passion',
     },
   ]
+
+  // Show loading spinner until component is mounted (prevents hydration errors)
+  if (!mounted) {
+    return <LoadingSpinner />
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
@@ -91,6 +104,10 @@ export default function AboutUs() {
                           src={member.avatar || '/placeholder.svg'}
                           alt={member.name}
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.src =
+                              '/placeholder.svg?height=120&width=120'
+                          }}
                         />
                       </div>
                       <div

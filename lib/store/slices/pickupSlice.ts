@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { pickupAPI } from "../../services/api"
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { pickupAPI } from '../../../lib/services/api'
 
 interface Pickup {
   id: number
@@ -13,7 +13,7 @@ interface Pickup {
     address: string
   }
   scheduledTime: string
-  status: "PENDING" | "ACCEPTED" | "IN_PROGRESS" | "COMPLETED" | "CANCELLED"
+  status: 'PENDING' | 'ACCEPTED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED'
   createdAt: string
   donor: {
     name: string
@@ -40,7 +40,7 @@ const initialState: PickupState = {
 }
 
 export const schedulePickup = createAsyncThunk(
-  "pickup/schedule",
+  'pickup/schedule',
   async (pickupData: {
     wasteType: string
     quantity: number
@@ -49,37 +49,43 @@ export const schedulePickup = createAsyncThunk(
   }) => {
     const response = await pickupAPI.schedulePickup(pickupData)
     return response.data
-  },
+  }
 )
 
-export const fetchUserPickups = createAsyncThunk("pickup/fetchUserPickups", async () => {
-  const response = await pickupAPI.getUserPickups()
-  return response.data
-})
+export const fetchUserPickups = createAsyncThunk(
+  'pickup/fetchUserPickups',
+  async () => {
+    const response = await pickupAPI.getUserPickups()
+    return response.data
+  }
+)
 
 export const fetchAvailablePickups = createAsyncThunk(
-  "pickup/fetchAvailable",
+  'pickup/fetchAvailable',
   async (location: { latitude: number; longitude: number }) => {
     const response = await pickupAPI.getAvailablePickups(location)
     return response.data
-  },
+  }
 )
 
-export const acceptPickup = createAsyncThunk("pickup/accept", async (pickupId: number) => {
-  const response = await pickupAPI.acceptPickup(pickupId)
-  return response.data
-})
+export const acceptPickup = createAsyncThunk(
+  'pickup/accept',
+  async (pickupId: number) => {
+    const response = await pickupAPI.acceptPickup(pickupId)
+    return response.data
+  }
+)
 
 export const updatePickupStatus = createAsyncThunk(
-  "pickup/updateStatus",
+  'pickup/updateStatus',
   async ({ pickupId, status }: { pickupId: number; status: string }) => {
     const response = await pickupAPI.updatePickupStatus(pickupId, status)
     return response.data
-  },
+  }
 )
 
 const pickupSlice = createSlice({
-  name: "pickup",
+  name: 'pickup',
   initialState,
   reducers: {
     clearError: (state) => {
@@ -98,7 +104,7 @@ const pickupSlice = createSlice({
       })
       .addCase(schedulePickup.rejected, (state, action) => {
         state.loading = false
-        state.error = action.error.message || "Failed to schedule pickup"
+        state.error = action.error.message || 'Failed to schedule pickup'
       })
       .addCase(fetchUserPickups.fulfilled, (state, action) => {
         state.pickups = action.payload
@@ -107,7 +113,9 @@ const pickupSlice = createSlice({
         state.availablePickups = action.payload
       })
       .addCase(acceptPickup.fulfilled, (state, action) => {
-        const index = state.availablePickups.findIndex((p) => p.id === action.payload.id)
+        const index = state.availablePickups.findIndex(
+          (p) => p.id === action.payload.id
+        )
         if (index !== -1) {
           state.availablePickups.splice(index, 1)
         }

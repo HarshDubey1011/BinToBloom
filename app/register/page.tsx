@@ -1,25 +1,28 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState } from "react"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import { useAppDispatch, useAppSelector } from "../store/hooks"
-import { register, clearError } from "../store/slices/authSlice"
-import { Eye, EyeOff, Mail, Lock, User, MapPin } from "lucide-react"
-import toast from "react-hot-toast"
+import type React from 'react'
+import { useState } from 'react'
+import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks'
+import { register, clearError } from '@/lib/store/slices/authSlice'
+import { Eye, EyeOff, Mail, Lock, User, MapPin } from 'lucide-react'
+import toast from 'react-hot-toast'
+import { useMounted } from '@/hooks/use-mounted'
+import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 const Register: React.FC = () => {
-  const [searchParams] = useSearchParams()
-  const initialRole = searchParams.get("role") || "donor"
+  const searchParams = useSearchParams()
+  const initialRole = searchParams.get('role') || 'donor'
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
     role: initialRole.toUpperCase(),
     location: {
-      address: "",
+      address: '',
       latitude: 0,
       longitude: 0,
     },
@@ -29,11 +32,14 @@ const Register: React.FC = () => {
   const [locationLoading, setLocationLoading] = useState(false)
 
   const dispatch = useAppDispatch()
-  const navigate = useNavigate()
+  const router = useRouter()
   const { loading, error } = useAppSelector((state) => state.auth)
+  const mounted = useMounted()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    if (e.target.name === "address") {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (e.target.name === 'address') {
       setFormData({
         ...formData,
         location: {
@@ -70,7 +76,7 @@ const Register: React.FC = () => {
                 address: `${latitude}, ${longitude}`,
               },
             })
-            toast.success("Location detected!")
+            toast.success('Location detected!')
           } catch (err) {
             setFormData({
               ...formData,
@@ -80,18 +86,18 @@ const Register: React.FC = () => {
                 address: `${latitude}, ${longitude}`,
               },
             })
-            toast.success("Location detected!")
+            toast.success('Location detected!')
           }
 
           setLocationLoading(false)
         },
         (error) => {
-          toast.error("Unable to get your location. Please enter manually.")
+          toast.error('Unable to get your location. Please enter manually.')
           setLocationLoading(false)
-        },
+        }
       )
     } else {
-      toast.error("Geolocation is not supported by this browser.")
+      toast.error('Geolocation is not supported by this browser.')
       setLocationLoading(false)
     }
   }
@@ -99,18 +105,23 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.name || !formData.email || !formData.password || !formData.location.address) {
-      toast.error("Please fill in all required fields")
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.location.address
+    ) {
+      toast.error('Please fill in all required fields')
       return
     }
 
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Passwords do not match")
+      toast.error('Passwords do not match')
       return
     }
 
     if (formData.password.length < 6) {
-      toast.error("Password must be at least 6 characters long")
+      toast.error('Password must be at least 6 characters long')
       return
     }
 
@@ -122,18 +133,22 @@ const Register: React.FC = () => {
           password: formData.password,
           role: formData.role,
           location: formData.location,
-        }),
+        })
       )
 
       if (register.fulfilled.match(result)) {
-        toast.success("Registration successful!")
-        navigate("/dashboard")
+        toast.success('Registration successful!')
+        router.push('/dashboard')
       } else {
-        toast.error((result.payload as string) || "Registration failed")
+        toast.error((result.payload as string) || 'Registration failed')
       }
     } catch (err) {
-      toast.error("Registration failed. Please try again.")
+      toast.error('Registration failed. Please try again.')
     }
+  }
+
+  if (!mounted) {
+    return <LoadingSpinner />
   }
 
   return (
@@ -144,10 +159,15 @@ const Register: React.FC = () => {
             <span className="text-white font-bold text-lg">B</span>
           </div>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Create your account
+        </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Or{" "}
-          <Link to="/login" className="font-medium text-green-600 hover:text-green-500">
+          Or{' '}
+          <Link
+            href="/login"
+            className="font-medium text-green-600 hover:text-green-500"
+          >
             sign in to your existing account
           </Link>
         </p>
@@ -157,7 +177,10 @@ const Register: React.FC = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Join as
               </label>
               <select
@@ -173,7 +196,10 @@ const Register: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Full Name
               </label>
               <div className="mt-1 relative">
@@ -194,7 +220,10 @@ const Register: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email address
               </label>
               <div className="mt-1 relative">
@@ -216,7 +245,10 @@ const Register: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="address"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Location
               </label>
               <div className="mt-1 flex">
@@ -244,14 +276,17 @@ const Register: React.FC = () => {
                   {locationLoading ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
                   ) : (
-                    "Detect"
+                    'Detect'
                   )}
                 </button>
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="mt-1 relative">
@@ -261,7 +296,7 @@ const Register: React.FC = () => {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
                   value={formData.password}
@@ -284,7 +319,10 @@ const Register: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Confirm Password
               </label>
               <div className="mt-1 relative">
@@ -294,7 +332,7 @@ const Register: React.FC = () => {
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete="new-password"
                   required
                   value={formData.confirmPassword}
@@ -317,7 +355,9 @@ const Register: React.FC = () => {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">{error}</div>
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
+                {error}
+              </div>
             )}
 
             <div>
@@ -332,7 +372,7 @@ const Register: React.FC = () => {
                     Creating account...
                   </div>
                 ) : (
-                  "Create account"
+                  'Create account'
                 )}
               </button>
             </div>
