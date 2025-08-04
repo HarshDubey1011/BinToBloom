@@ -23,6 +23,12 @@ const Login: React.FC = () => {
   const { loading, error } = useAppSelector((state) => state.auth)
   const mounted = useMounted()
 
+  type LoginPayload = {
+    user: {
+      role: 'COLLECTOR' | 'DONOR'
+    }
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -45,7 +51,17 @@ const Login: React.FC = () => {
       const result = await dispatch(login(formData))
       if (login.fulfilled.match(result)) {
         toast.success('Login successful!')
-        router.push('/dashboard')
+        const loggedInUser = result.payload as LoginPayload
+        // console.log('result', result.payload)
+        // console.log('loggedInUser', loggedInUser)
+
+        console.log('loggedInUser.role', loggedInUser.user.role)
+
+        if (loggedInUser.user.role === 'COLLECTOR') {
+          router.push('/collector-dashboard')
+        } else {
+          router.push('/dashboard')
+        }
       } else {
         toast.error((result.payload as string) || 'Login failed')
       }

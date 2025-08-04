@@ -15,6 +15,12 @@ const Register: React.FC = () => {
   const searchParams = useSearchParams()
   const initialRole = searchParams.get('role') || 'donor'
 
+  type RegisterPayload = {
+    user: {
+      role: 'COLLECTOR' | 'DONOR'
+    }
+  }
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -138,7 +144,13 @@ const Register: React.FC = () => {
 
       if (register.fulfilled.match(result)) {
         toast.success('Registration successful!')
-        router.push('/dashboard')
+        const registeredUser = result.payload as RegisterPayload
+
+        if (registeredUser.user.role === 'COLLECTOR') {
+          router.push('/collector-dashboard')
+        } else {
+          router.push('/dashboard')
+        }
       } else {
         toast.error((result.payload as string) || 'Registration failed')
       }
