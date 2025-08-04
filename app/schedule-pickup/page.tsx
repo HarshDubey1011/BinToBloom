@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 import { useMounted } from '@/hooks/use-mounted'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import axios from 'axios'
 
 const SchedulePickup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const SchedulePickup: React.FC = () => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const { loading } = useAppSelector((state) => state.pickup)
-  const { user } = useAppSelector((state) => state.auth)
+  //const { user } = useAppSelector((state) => state.auth)
   const mounted = useMounted()
 
   const wasteTypes = [
@@ -70,35 +71,48 @@ const SchedulePickup: React.FC = () => {
           const { latitude, longitude } = position.coords
 
           try {
-            // Use user's saved location if available
-            if (user?.location?.address) {
-              setFormData({
-                ...formData,
-                location: {
-                  latitude: user.location.latitude,
-                  longitude: user.location.longitude,
-                  address: user.location.address,
-                },
-              })
-            } else {
-              setFormData({
-                ...formData,
-                location: {
-                  latitude,
-                  longitude,
-                  address: `${latitude}, ${longitude}`,
-                },
-              })
+            const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY // api key open cage
+            const response = await axios.get(
+              `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`
+            )
+
+            const address =
+              response.data.results[0]?.formatted || `${latitude}, ${longitude}`
+
+            setFormData((prev) => ({
+              ...prev,
+              location: {
+                latitude,
+                longitude,
+                address,
+              },
+            }))
+            toast.success('Location detected!')
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              toast.error(`Failed to get address: ${err.message}`)
             }
-            toast.success('Location detected successfully!')
-          } catch (err) {
-            toast.error('Unable to get address. Please enter manually.')
+            toast.error('Failed to get address from coordinates.')
+            setFormData((prev) => ({
+              ...prev,
+              location: {
+                latitude,
+                longitude,
+                address: `${latitude}, ${longitude}`,
+              },
+            }))
           }
 
           setLocationLoading(false)
         },
-        (error) => {
-          toast.error('Unable to get your location. Please enter manually.')
+        (error: unknown) => {
+          if (error instanceof Error) {
+            toast.error(
+              `Error getting location, Please Enter Manually: ${error.message}`
+            )
+          } else {
+            toast.error('Unable to get your location. Please enter manually.')
+          }
           setLocationLoading(false)
         }
       )
@@ -148,11 +162,16 @@ const SchedulePickup: React.FC = () => {
       } else {
         toast.error('Failed to schedule pickup. Please try again.')
       }
-    } catch (err) {
-      toast.error('Failed to schedule pickup. Please try again.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(
+          'Failed to schedule pickup. Please try again.' + err.message
+        )
+      } else {
+        toast.error('Failed to schedule pickup. Please try again.')
+      }
     }
   }
-
   // Set minimum date to current date and time
   const now = new Date()
   const minDateTime = new Date(now.getTime() + 60 * 60 * 1000) // 1 hour from now
@@ -362,7 +381,7 @@ const SchedulePickup: React.FC = () => {
                         A collector will accept your request and contact you
                       </li>
                       <li>
-                        You'll receive notifications about the pickup status
+                        You&#39;ll receive notifications about the pickup status
                       </li>
                       <li>
                         The collector will arrive at your specified time and
