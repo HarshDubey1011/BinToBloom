@@ -68,7 +68,7 @@ The backend will start on `http://localhost:8080`
 npm install
 
 # Start development server
-npm start
+npm run dev
 ```
 
 The frontend will start on `http://localhost:3000`
