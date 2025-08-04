@@ -37,13 +37,13 @@ A full-stack waste management platform that connects donors with collectors to t
 ## 🔧 Installation & Setup
 
 ### 1. Clone the Repository
-\`\`\`bash
+```bash
 git clone <repository-url>
 cd waste-management-platform
-\`\`\`
+```
 
 ### 2. Database Setup
-\`\`\`bash
+```bash
 # Create MySQL database
 mysql -u root -p
 CREATE DATABASE waste_management_db;
@@ -51,49 +51,49 @@ CREATE DATABASE waste_management_db;
 # Run schema and sample data
 mysql -u root -p waste_management_db < database/schema.sql
 mysql -u root -p waste_management_db < database/sample_data.sql
-\`\`\`
+```
 
 ### 3. Backend Setup
-\`\`\`bash
+```bash
 cd backend
 mvn clean install
 mvn spring-boot:run
-\`\`\`
+```
 
 The backend will start on `http://localhost:8080`
 
 ### 4. Frontend Setup
-\`\`\`bash
+```bash
 # Install dependencies
 npm install
 
 # Start development server
 npm start
-\`\`\`
+```
 
 The frontend will start on `http://localhost:3000`
 
 ### 5. Using Docker (Alternative)
-\`\`\`bash
+```bash
 # Build and run with Docker Compose
 docker-compose up --build
-\`\`\`
+```
 
 ## 🔑 Environment Variables
 
 ### Backend (application.properties)
-\`\`\`properties
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/waste_management_db
 spring.datasource.username=root
 spring.datasource.password=your_password
 jwt.secret=your_jwt_secret_key
 cors.allowed-origins=http://localhost:3000
-\`\`\`
+```
 
 ### Frontend (.env)
-\`\`\`env
+```env
 REACT_APP_API_URL=http://localhost:8080/api
-\`\`\`
+```
 
 ## 📱 Usage
 
@@ -132,7 +132,7 @@ REACT_APP_API_URL=http://localhost:8080/api
 ## 🧪 Testing
 
 ### Sample Login Credentials
-\`\`\`
+```
 Donor Account:
 Email: john@example.com
 Password: password
@@ -140,10 +140,10 @@ Password: password
 Collector Account:
 Email: jane@example.com
 Password: password
-\`\`\`
+```
 
 ### API Testing with cURL
-\`\`\`bash
+```bash
 # Register new user
 curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
@@ -166,27 +166,27 @@ curl -X POST http://localhost:8080/api/auth/login \
     "email": "test@example.com",
     "password": "password123"
   }'
-\`\`\`
+```
 
 ## 🚀 Deployment
 
 ### Production Build
-\`\`\`bash
+```bash
 # Frontend
 npm run build
 
 # Backend
 mvn clean package -DskipTests
 java -jar target/waste-management-backend-0.0.1-SNAPSHOT.jar
-\`\`\`
+```
 
 ### Environment Variables for Production
-\`\`\`bash
+```bash
 export SPRING_DATASOURCE_URL=jdbc:mysql://your-db-host:3306/waste_management_db
 export SPRING_DATASOURCE_USERNAME=your_username
 export SPRING_DATASOURCE_PASSWORD=your_password
 export JWT_SECRET=your_secure_secret_key
-\`\`\`
+```
 
 ## 🤝 Contributing
 
@@ -202,13 +202,11 @@ This project is licensed under the MIT License.
 
 ## 🆘 Support
 
-For support, email support@bintobloom.com or create an issue in the repository.
+For support, email harshdubey1011@gmail.com or create an issue in the repository.
 
 ---
 
 **BinToBloom** - Making the world greener, one pickup at a time! 🌱
-\`\`\`
-\`\`\`
 
 ## 🎉 **Complete Full-Stack Application Ready!**
 
