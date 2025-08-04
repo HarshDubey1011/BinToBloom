@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { pickupAPI } from '../../../lib/services/api'
+import { LocationDto } from '@/types/auth'
 
 interface Pickup {
   id: number
@@ -44,7 +45,7 @@ export const schedulePickup = createAsyncThunk(
   async (pickupData: {
     wasteType: string
     quantity: number
-    location: any
+    location: LocationDto
     scheduledTime: string
   }) => {
     const response = await pickupAPI.schedulePickup(pickupData)
