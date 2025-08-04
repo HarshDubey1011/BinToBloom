@@ -10,6 +10,7 @@ import { Eye, EyeOff, Mail, Lock, User, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useMounted } from '@/hooks/use-mounted'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
+import axios from 'axios'
 
 const Register: React.FC = () => {
   const searchParams = useSearchParams()
@@ -65,6 +66,49 @@ const Register: React.FC = () => {
     }
   }
 
+  // const getCurrentLocation = () => {
+  //   setLocationLoading(true)
+
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       async (position) => {
+  //         const { latitude, longitude } = position.coords
+
+  //         try {
+  //           setFormData({
+  //             ...formData,
+  //             location: {
+  //               latitude,
+  //               longitude,
+  //               address: `${latitude}, ${longitude}`,
+  //             },
+  //           })
+  //           toast.success('Location detected!')
+  //         } catch (err: unknown) {
+  //           setFormData({
+  //             ...formData,
+  //             location: {
+  //               latitude,
+  //               longitude,
+  //               address: `${latitude}, ${longitude}`,
+  //             },
+  //           })
+  //           toast.success('Location detected!')
+  //         }
+
+  //         setLocationLoading(false)
+  //       },
+  //       (error) => {
+  //         toast.error('Unable to get your location. Please enter manually.')
+  //         setLocationLoading(false)
+  //       }
+  //     )
+  //   } else {
+  //     toast.error('Geolocation is not supported by this browser.')
+  //     setLocationLoading(false)
+  //   }
+  // }
+
   const getCurrentLocation = () => {
     setLocationLoading(true)
 
@@ -74,31 +118,48 @@ const Register: React.FC = () => {
           const { latitude, longitude } = position.coords
 
           try {
-            setFormData({
-              ...formData,
+            const apiKey = process.env.NEXT_PUBLIC_OPENCAGE_API_KEY // api key open cage
+            const response = await axios.get(
+              `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`
+            )
+
+            const address =
+              response.data.results[0]?.formatted || `${latitude}, ${longitude}`
+
+            setFormData((prev) => ({
+              ...prev,
+              location: {
+                latitude,
+                longitude,
+                address,
+              },
+            }))
+            toast.success('Location detected!')
+          } catch (err: unknown) {
+            if (err instanceof Error) {
+              toast.error(`Failed to get address: ${err.message}`)
+            }
+            toast.error('Failed to get address from coordinates.')
+            setFormData((prev) => ({
+              ...prev,
               location: {
                 latitude,
                 longitude,
                 address: `${latitude}, ${longitude}`,
               },
-            })
-            toast.success('Location detected!')
-          } catch (err) {
-            setFormData({
-              ...formData,
-              location: {
-                latitude,
-                longitude,
-                address: `${latitude}, ${longitude}`,
-              },
-            })
-            toast.success('Location detected!')
+            }))
           }
 
           setLocationLoading(false)
         },
-        (error) => {
-          toast.error('Unable to get your location. Please enter manually.')
+        (error: unknown) => {
+          if (error instanceof Error) {
+            toast.error(
+              `Error getting location, Please Enter Manually: ${error.message}`
+            )
+          } else {
+            toast.error('Unable to get your location. Please enter manually.')
+          }
           setLocationLoading(false)
         }
       )
@@ -154,8 +215,12 @@ const Register: React.FC = () => {
       } else {
         toast.error((result.payload as string) || 'Registration failed')
       }
-    } catch (err) {
-      toast.error('Registration failed. Please try again.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error('Registration failed. Please try again.' + err.message)
+      } else {
+        toast.error('Registration failed. Please try again.')
+      }
     }
   }
 
