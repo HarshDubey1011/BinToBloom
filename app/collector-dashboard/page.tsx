@@ -101,8 +101,12 @@ const CollectorDashboard: React.FC = () => {
       } else {
         toast.error('Failed to accept pickup. Please try again.')
       }
-    } catch (err) {
-      toast.error('Failed to accept pickup. Please try again.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error('Failed to accept pickup. Please try again. ' + err.message)
+      } else {
+        toast.error('Failed to accept pickup due to an unknown error.')
+      }
     }
   }
 
@@ -116,8 +120,14 @@ const CollectorDashboard: React.FC = () => {
       } else {
         toast.error('Failed to update status. Please try again.')
       }
-    } catch (err) {
-      toast.error('Failed to update status. Please try again.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error('Failed to update status. Please try again. ' + err.message)
+      } else {
+        toast.error(
+          'Failed to update status. Please try again. An unknown error occurred.'
+        )
+      }
     }
   }
 
@@ -577,7 +587,7 @@ const CollectorDashboard: React.FC = () => {
                       </span>
                     </div>
                     <p className="text-xs text-green-600 mt-1">
-                      You're in the top 10% of collectors this month!
+                      You&rsquo;re in the top 10% of collectors this month!
                     </p>
                   </div>
                 </div>

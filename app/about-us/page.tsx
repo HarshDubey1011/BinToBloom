@@ -4,7 +4,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Leaf, Heart, Lightbulb, Target, Users } from 'lucide-react'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
-import { useMounted } from '@/hooks/use-mounted'
 
 export default function AboutUs() {
   const [mounted, setMounted] = useState(false)
@@ -75,9 +74,9 @@ export default function AboutUs() {
             <span className="text-green-600 block">BinToBloom</span>
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            We're a passionate team of innovators, dreamers, and changemakers
-            united by a single mission: transforming waste into opportunities
-            for a sustainable future.
+            We&rsquo;re a passionate team of innovators, dreamers, and
+            changemakers united by a single mission: transforming waste into
+            opportunities for a sustainable future.
           </p>
         </div>
 
@@ -90,7 +89,7 @@ export default function AboutUs() {
       <section className="py-16 px-4 md:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {teamMembers.map((member, index) => {
+            {teamMembers.map((member) => {
               const IconComponent = member.icon
               return (
                 <Card
@@ -129,7 +128,7 @@ export default function AboutUs() {
                     </Badge>
 
                     <p className="text-gray-600 italic text-sm leading-relaxed">
-                      "{member.quote}"
+                      &ldquo;{member.quote}&rdquo;
                     </p>
                   </CardContent>
                 </Card>
@@ -149,13 +148,14 @@ export default function AboutUs() {
             <p className="text-xl leading-relaxed mb-6">
               Born from a shared vision of environmental transformation, our
               team came together with diverse backgrounds but a unified purpose:
-              to turn the world's waste problem into blooming opportunities.
+              to turn the world&rsquo;s waste problem into blooming
+              opportunities.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Each of us brings unique perspectives and skills to the table, but
-              we're all driven by the same belief that innovation and
-              sustainability can go hand in hand. Together, we're not just
-              building a platform – we're cultivating a movement.
+              we&rsquo;re all driven by the same belief that innovation and
+              sustainability can go hand in hand. Together, we&rsquo;re not just
+              building a platform – we&rsquo;re cultivating a movement.
             </p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export default function AboutUs() {
                 Innovation
               </h3>
               <p className="text-gray-600">
-                We're constantly pushing boundaries and finding creative
+                We&rsquo;re constantly pushing boundaries and finding creative
                 solutions to complex environmental challenges.
               </p>
             </div>
@@ -217,8 +217,8 @@ export default function AboutUs() {
             Join Our Mission
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Ready to be part of the change? Let's work together to turn waste
-            into blooming opportunities.
+            Ready to be part of the change? Let&rsquo;s work together to turn
+            waste into blooming opportunities.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors">
