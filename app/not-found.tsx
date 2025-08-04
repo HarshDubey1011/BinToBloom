@@ -118,12 +118,12 @@ export default function NotFound() {
         <div className="mb-8 p-6 bg-white/70 backdrop-blur-sm rounded-2xl border border-green-100">
           <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center justify-center gap-2">
             <Leaf className="w-5 h-5 text-green-600" />
-            While You're Here, Did You Know?
+            While You&#39;re Here, Did You Know?
           </h3>
           <p className="text-gray-600 text-sm">
-            The average household throws away 30% of food purchased. That's like
-            throwing money in the bin! Let BinToBloom help you turn that waste
-            into something beautiful. 🌸
+            The average household throws away 30% of food purchased. That&#39;s
+            like throwing money in the bin! Let BinToBloom help you turn that
+            waste into something beautiful. 🌸
           </p>
         </div>
 
@@ -152,7 +152,8 @@ export default function NotFound() {
         {/* Fun Footer Message */}
         <div className="mt-12 text-center">
           <p className="text-sm text-gray-500 mb-2">
-            "Every page not found is a chance to plant a new idea!" 🌱
+            &ldquo;Every page not found is a chance to plant a new idea!&rdquo;
+            🌱
           </p>
           <div className="flex justify-center space-x-2 text-2xl">
             <span className="animate-bounce" style={{ animationDelay: '0s' }}>

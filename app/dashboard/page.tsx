@@ -23,7 +23,7 @@ import ProtectedRoute from '@/components/ProtectedRoute'
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.auth)
-  const { pickups, loading } = useAppSelector((state) => state.pickup)
+  const { pickups } = useAppSelector((state) => state.pickup)
   const { notifications } = useAppSelector((state) => state.notifications)
   const mounted = useMounted()
 
@@ -353,7 +353,8 @@ const Dashboard: React.FC = () => {
                       </span>
                     </div>
                     <p className="text-xs text-green-600 mt-1">
-                      Keep up the great work! You're making a real difference.
+                      Keep up the great work! You&#39;re making a real
+                      difference.
                     </p>
                   </div>
                 </div>

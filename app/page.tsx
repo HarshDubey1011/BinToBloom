@@ -7,7 +7,7 @@ import { useMounted } from '@/hooks/use-mounted'
 import { LoadingSpinner } from '@/components/LoadingSpinner'
 
 const Home: React.FC = () => {
-  const { isAuthenticated, user } = useAppSelector((state) => state.auth)
+  const { isAuthenticated } = useAppSelector((state) => state.auth)
   const mounted = useMounted()
 
   if (!mounted) {
@@ -140,7 +140,7 @@ const Home: React.FC = () => {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Our Community Impact</h2>
             <p className="text-xl opacity-90">
-              Together, we're making a difference
+              Together, we&#39;re making a difference
             </p>
           </div>
 

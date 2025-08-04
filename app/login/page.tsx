@@ -65,8 +65,12 @@ const Login: React.FC = () => {
       } else {
         toast.error((result.payload as string) || 'Login failed')
       }
-    } catch (err) {
-      toast.error('Login failed. Please try again.')
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error('Login failed. Please try again.' + err.message)
+      } else {
+        toast.error('An unexpected error occurred. Please try again.')
+      }
     }
   }
 
