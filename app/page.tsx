@@ -146,19 +146,19 @@ const Home: React.FC = () => {
 
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2">2,500kg</div>
+              <div className="text-4xl font-bold mb-2">250kg</div>
               <div className="opacity-90">Total Waste Collected</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">1,200L</div>
+              <div className="text-4xl font-bold mb-2">12L</div>
               <div className="opacity-90">Pesticide Produced</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">45</div>
+              <div className="text-4xl font-bold mb-2">15</div>
               <div className="opacity-90">Partner NGOs</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">150</div>
+              <div className="text-4xl font-bold mb-2">40</div>
               <div className="opacity-90">Areas Treated</div>
             </div>
           </div>
@@ -211,31 +211,43 @@ const Home: React.FC = () => {
             <div>
               <h3 className="font-semibold mb-4">Support</h3>
               <div className="space-y-2">
-                <a href="#" className="block text-gray-400 hover:text-white">
+                <Link
+                  href="contact-us"
+                  className="block text-gray-400 hover:text-white"
+                >
                   Contact Us
-                </a>
-                <a href="#" className="block text-gray-400 hover:text-white">
+                </Link>
+                <Link
+                  href="faq"
+                  className="block text-gray-400 hover:text-white"
+                >
                   FAQ
-                </a>
-                <a href="#" className="block text-gray-400 hover:text-white">
+                </Link>
+                <Link
+                  href="help-center"
+                  className="block text-gray-400 hover:text-white"
+                >
                   Help Center
-                </a>
-                <a href="#" className="block text-gray-400 hover:text-white">
+                </Link>
+                {/* <Link href="#" className="block text-gray-400 hover:text-white">
                   Privacy Policy
-                </a>
-                <a href="#" className="block text-gray-400 hover:text-white">
+                </Link>
+                <Link href="#" className="block text-gray-400 hover:text-white">
                   Terms of Service
-                </a>
+                </Link> */}
               </div>
             </div>
 
             <div>
-              <h3 className="font-semibold mb-4">Sustainability Pledge</h3>
+              <h3 className="font-semibold mb-4">
+                Our Environmental Commitment
+              </h3>
               <p className="text-gray-400 text-sm mb-4">
-                Certified Carbon Neutral Operations
+                Supporting eco-friendly practices in waste collection &
+                recycling.
               </p>
               <div className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm text-center">
-                🌱 Verified Carbon Neutral Operations
+                ♻️ We Promote Zero-Waste & Green Logistics
               </div>
             </div>
           </div>

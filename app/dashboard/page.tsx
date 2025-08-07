@@ -332,7 +332,7 @@ const Dashboard: React.FC = () => {
                         Trees Equivalent
                       </span>
                       <span className="text-sm font-medium text-green-600">
-                        {Math.floor(stats.totalWaste / 7.5)} trees
+                        {Math.floor(stats.totalWaste / 7.5).toFixed(2)} trees
                       </span>
                     </div>
                     <div className="flex justify-between items-center">

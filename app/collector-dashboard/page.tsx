@@ -159,14 +159,6 @@ const CollectorDashboard: React.FC = () => {
     ),
   }
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center">
-  //       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-500"></div>
-  //     </div>
-  //   )
-  // }
-
   if (!mounted || authLoading || pickupLoading) {
     return <LoadingSpinner />
   }
@@ -243,7 +235,7 @@ const CollectorDashboard: React.FC = () => {
                     Waste Collected (kg)
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {stats.totalWasteCollected}
+                    {stats.totalWasteCollected.toFixed(2)}
                   </p>
                 </div>
               </div>

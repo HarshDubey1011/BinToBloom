@@ -11,10 +11,13 @@ export interface RegisterDto {
   }
 }
 
+// const API_BASE_URL =
+//   process.env.NEXT_PUBLIC_API_URL ||
+//   process.env.NEXT_PUBLIC_API_URL_LOCAL ||
+//   'http://localhost:8080/api'
+
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_API_URL_LOCAL ||
-  'http://localhost:8080/api'
+  process.env.NEXT_PUBLIC_API_URL_LOCAL || 'http://localhost:8080/api'
 
 console.log('API Base URL:', API_BASE_URL)
 const api = axios.create({
