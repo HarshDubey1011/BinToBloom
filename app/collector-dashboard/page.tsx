@@ -49,20 +49,6 @@ const CollectorDashboard: React.FC = () => {
 
   const mounted = useMounted()
 
-  // useEffect(() => {
-  //   // Fetch user's location and get available pickups
-  //   if (user?.location) {
-  //     dispatch(
-  //       fetchAvailablePickups({
-  //         latitude: user.location.latitude,
-  //         longitude: user.location.longitude,
-  //       }),
-  //     )
-  //   }
-  //   dispatch(fetchUserPickups())
-  //   dispatch(fetchNotifications())
-  // }, [dispatch, user])
-
   useEffect(() => {
     if (!authLoading && (!isAuthenticated || user?.role !== 'COLLECTOR')) {
       router.replace('/login')

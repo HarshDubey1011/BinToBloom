@@ -306,7 +306,7 @@ export default function FAQPage() {
               size="lg"
               className="bg-green-600 hover:bg-green-700"
             >
-              <Link href="/contact">Contact Support</Link>
+              <Link href="/contact-us">Contact Support</Link>
             </Button>
             <Button asChild variant="outline" size="lg">
               <Link href="/help">Visit Help Center</Link>
